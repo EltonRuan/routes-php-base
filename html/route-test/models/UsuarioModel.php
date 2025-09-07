@@ -27,9 +27,14 @@ class UsuarioModel {
 
     public function create($nome, $email) {
         $stmt = $this->pdo->prepare("INSERT INTO usuarios (nome, email) VALUES (:nome, :email)");
-        $stmt->execute(['nome' => $nome, 'email' => $email]);
-        return $this->pdo->lastInsertId();
+        
+        if ($stmt->execute(['nome' => $nome, 'email' => $email])) {
+            return $this->pdo->lastInsertId();
+        } else {
+            return false;
+        }
     }
+
 
     public function get($id = null) {
         if ($id) {
@@ -44,11 +49,24 @@ class UsuarioModel {
 
     public function update($id, $nome, $email) {
         $stmt = $this->pdo->prepare("UPDATE usuarios SET nome = :nome, email = :email WHERE id = :id");
-        return $stmt->execute(['nome' => $nome, 'email' => $email, 'id' => $id]);
+        $stmt->execute(['nome' => $nome, 'email' => $email, 'id' => $id]);
+
+        if($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function delete($id) {
         $stmt = $this->pdo->prepare("DELETE FROM usuarios WHERE id = :id");
-        return $stmt->execute(['id' => $id]);
+        $stmt->execute(['id' => $id]);
+        
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
 }

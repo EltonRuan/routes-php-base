@@ -5,7 +5,7 @@ require __DIR__ . '/controllers/UsuarioController.php';
 function rota($uri, $method) {
     $rotas = [
         'GET' => [
-            '' => function() { echo "Página inicial"; },
+            '' => function() { echo "Rota Base"; },
             'usuarios' => function() { 
                 (new UsuarioController)->listar();
             },
